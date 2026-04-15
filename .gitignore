@@ -1,0 +1,15 @@
+venv/
+__pycache__/
+*.pyc
+node_modules/
+.env
+*.csv
+*.parquet
+*.feather
+*.h5
+*.pkl
+.DS_Store
+.pytest_cache
+tests/
+data/
+Zip_Codes/

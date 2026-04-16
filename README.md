@@ -1,6 +1,6 @@
 # PeriMapper
 
-PeriMapper is a Streamlit app for exploring ZIP-level geographic patterns in a perinatal dataset. It joins a filtered machine-learning pickle to ZIP lookup columns, aggregates a selected variable by ZIP, and renders an interactive Houston-area choropleth with a downloadable summary table.
+PeriMapper is a companion tool to [PeriMiner](https://github.com/mdsefero/PeriMiner) — a Streamlit app for exploring ZIP-level geographic patterns in a perinatal dataset. It joins a filtered machine-learning pickle to ZIP lookup columns, aggregates a selected variable by ZIP, and renders an interactive Houston-area choropleth with a downloadable summary table.
 
 ## Repository Layout
 
@@ -15,11 +15,19 @@ PeriMapper is a Streamlit app for exploring ZIP-level geographic patterns in a p
 
 PeriMapper expects:
 
-- `PICKLE_PATH` in `.env`, pointing to the source perinatal pickle.
+- `PICKLE_PATH` in `.env`, pointing to the source perinatal pickle. See `.env.example` for the full list of supported variables.
 - A ZIP lookup CSV at `data/zip_lookup.csv` by default.
 - Houston ZIP shapefile assets under `Zip_Codes/`.
 
 The dashboard derives `DB_for_PMap.pkl` from the directory containing `PICKLE_PATH`.
+
+### Shapefile dependency
+
+The ZIP geometry comes from the U.S. Census Bureau's 2023 TIGER/Line ZCTA shapefile, which is too large to ship in the repo. Download `tl_2023_us_zcta520.zip` from the Census Bureau and extract it into `Zip_Codes/` so that `Zip_Codes/tl_2023_us_zcta520.shp` (and its sidecar `.dbf`, `.shx`, `.prj`, `.cpg` files) exist:
+
+<https://www2.census.gov/geo/tiger/TIGER2023/ZCTA520/>
+
+Override the location via `SHAPEFILE_PATH` in `.env` if you place it elsewhere.
 
 ## Setup
 
@@ -57,9 +65,3 @@ streamlit run PMap_dashboard.py
 - Continuous variables are mapped as ZIP-level means.
 - `Min effective count` uses the minority-class count for binary variables and total non-null rows for continuous variables.
 - `Min records per zip` hides low-volume ZIPs from the map but keeps them visible in the summary table.
-
-## Tests
-
-```bash
-pytest
-```
